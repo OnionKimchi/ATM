@@ -67,11 +67,7 @@ public class GameManager : MonoBehaviour
         //아래의 주석 Userdata 폴더 경로는 사용을 고려했었지만 이 구현에서는 Application.persistentDataPath를 사용하였습니다.
         //string path = Path.Combine(Directory.GetCurrentDirectory(), "Userdata", $"{data.ID}.json");
 
-        // 변환된 JSON 문자열을 파일에 저장합니다.
-        // File.WriteAllText는 지정한 경로에 문자열을 저장하며, 파일이 없으면 새로 생성합니다.
-        File.WriteAllText(path, json);
-
-        // 이 메서드를 호출하면 현재 userData의 값이 {data.ID}.json 파일에 저장됩니다.
+        File.WriteAllText(path, json); // File.WriteAllText는 지정한 경로에 문자열을 저장하며, 파일이 없으면 새로 생성합니다.
     }
 
     public string LoadUserData(string id, string password)
