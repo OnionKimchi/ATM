@@ -10,7 +10,11 @@ public class GameManager : MonoBehaviour
         {
             if (instance == null)
             {
-                instance = new GameObject("GameManager").AddComponent<GameManager>();
+                instance = FindObjectOfType<GameManager>();
+                if (instance != null)
+                {
+                    instance = new GameObject("GameManager").AddComponent<GameManager>();
+                }
             }
             return instance;
         }
@@ -60,6 +64,8 @@ public class GameManager : MonoBehaviour
         // 프로젝트 폴더의 바깥에 경로를 지정해야 읽기 전용 프로젝트에도 호환이 되므로 안전한 경로가 필요한것입니다.
         string path = Path.Combine(Application.persistentDataPath, $"{data.ID}.json");
 
+        //아래의 주석 Userdata 폴더 경로는 사용을 고려했었지만 이 구현에서는 Application.persistentDataPath를 사용하였습니다.
+        //string path = Path.Combine(Directory.GetCurrentDirectory(), "Userdata", $"{data.ID}.json");
 
         // 변환된 JSON 문자열을 파일에 저장합니다.
         // File.WriteAllText는 지정한 경로에 문자열을 저장하며, 파일이 없으면 새로 생성합니다.

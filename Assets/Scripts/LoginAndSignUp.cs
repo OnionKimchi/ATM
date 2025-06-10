@@ -18,6 +18,8 @@ public class LoginAndSignUp : MonoBehaviour
     [SerializeField] private GameObject popupBank; // 은행 팝업 UI
     [SerializeField] private GameObject popupError; // 에러 팝업 UI
     [SerializeField] private TMPro.TMP_Text errorText; // 에러 메시지를 표시할 텍스트 컴포넌트
+
+    [SerializeField] private UserInfoUI userInfoUI; // 사용자 정보 UI를 가져오기 위한 변수
     void Start()
     {
         OnLoginUI(); // 시작 시 로그인 UI를 활성화합니다.
@@ -28,7 +30,6 @@ public class LoginAndSignUp : MonoBehaviour
         popupLogin.SetActive(true); // 로그인 팝업 UI 활성화
         popupSignUp.SetActive(false); // 회원가입 팝업 UI 비활성화
         popupBank.SetActive(false); // 은행 팝업 UI 비활성화
-        popupError.SetActive(false); // 에러 팝업 UI 비활성화
     }
 
     public void OnSignUpUI()
@@ -36,7 +37,6 @@ public class LoginAndSignUp : MonoBehaviour
         popupLogin.SetActive(false); // 로그인 팝업 UI 비활성화
         popupSignUp.SetActive(true); // 회원가입 팝업 UI 활성화
         popupBank.SetActive(false); // 은행 팝업 UI 비활성화
-        popupError.SetActive(false); // 에러 팝업 UI 비활성화
     }
 
     public void OnBankUI()
@@ -44,7 +44,6 @@ public class LoginAndSignUp : MonoBehaviour
         popupLogin.SetActive(false); // 로그인 팝업 UI 비활성화
         popupSignUp.SetActive(false); // 회원가입 팝업 UI 비활성화
         popupBank.SetActive(true); // 은행 팝업 UI 활성화
-        popupError.SetActive(false); // 에러 팝업 UI 비활성화
     }
 
     public void OnSignUp()
@@ -104,6 +103,7 @@ public class LoginAndSignUp : MonoBehaviour
                 break;
             case "로그인 성공":
                 OnBankUI();
+                userInfoUI.Refresh();
                 OnErrorPopup("로그인 성공!"); // 로그인 성공 메시지 표시
                 break;
             default:
