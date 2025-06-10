@@ -16,8 +16,8 @@ public class LoginAndSignUp : MonoBehaviour
     [SerializeField] private GameObject popupLogin; // 로그인 팝업 UI
     [SerializeField] private GameObject popupSignUp; // 회원가입 팝업 UI
     [SerializeField] private GameObject popupBank; // 은행 팝업 UI
-    [SerializeField] private GameObject popupSignUpSuccess; // 회원가입 성공 팝업 UI
-    [SerializeField] private GameObject popupSignUpFail; // 회원가입 실패 팝업 UI
+    [SerializeField] private GameObject popupError; // 에러 팝업 UI
+    [SerializeField] private TMPro.TMP_Text errorText; // 에러 메시지를 표시할 텍스트 컴포넌트
     void Start()
     {
         OnLoginUI(); // 시작 시 로그인 UI를 활성화합니다.
@@ -28,6 +28,7 @@ public class LoginAndSignUp : MonoBehaviour
         popupLogin.SetActive(true); // 로그인 팝업 UI 활성화
         popupSignUp.SetActive(false); // 회원가입 팝업 UI 비활성화
         popupBank.SetActive(false); // 은행 팝업 UI 비활성화
+        popupError.SetActive(false); // 에러 팝업 UI 비활성화
     }
 
     public void OnSignUpUI()
@@ -35,6 +36,7 @@ public class LoginAndSignUp : MonoBehaviour
         popupLogin.SetActive(false); // 로그인 팝업 UI 비활성화
         popupSignUp.SetActive(true); // 회원가입 팝업 UI 활성화
         popupBank.SetActive(false); // 은행 팝업 UI 비활성화
+        popupError.SetActive(false); // 에러 팝업 UI 비활성화
     }
 
     public void OnBankUI()
@@ -42,6 +44,7 @@ public class LoginAndSignUp : MonoBehaviour
         popupLogin.SetActive(false); // 로그인 팝업 UI 비활성화
         popupSignUp.SetActive(false); // 회원가입 팝업 UI 비활성화
         popupBank.SetActive(true); // 은행 팝업 UI 활성화
+        popupError.SetActive(false); // 에러 팝업 UI 비활성화
     }
 
     public void OnSignUp()
@@ -51,7 +54,7 @@ public class LoginAndSignUp : MonoBehaviour
         string userName = signUpNameInputField.text; // 이름 입력 필드에서 텍스트 가져오기
         if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(password)|| string.IsNullOrEmpty(userName)) // ID, 비밀번호, 이름 중 하나라도 비어있으면 경고창 표시
         {
-            Debug.LogWarning("ID와 비밀번호를 모두 입력해주세요.");
+            OnErrorPopup("ID, 비밀번호, 이름을 모두 입력해주세요."); // 에러 팝업 UI 활성화
             return;
         }
         // 회원가입 로직을 여기에 추가합니다.
@@ -61,11 +64,12 @@ public class LoginAndSignUp : MonoBehaviour
 
         if (File.Exists(path)) // 이미 같은 ID로 저장된 파일이 있으면 경고창 표시
         {
-            popupSignUpFail.SetActive(true); // 회원가입 실패 팝업 UI 활성화
+            OnErrorPopup("이미 존재하는 ID입니다. 다른 ID를 사용해주세요."); // 에러 팝업 UI 활성화
             return;
         }
 
         // ID가 중복되지 않으면 회원가입 성공 팝업 출력
+        OnErrorPopup("회원가입 성공! 로그인 화면으로 돌아갑니다."); // 에러 팝업 UI 활성화
 
 
         // 새로운 회원가입 정보를 UserData 객체로 생성합니다.
@@ -93,18 +97,30 @@ public class LoginAndSignUp : MonoBehaviour
         switch (GameManager.Instance.LoadUserData(id, password))
         {
             case "존재하지 않는 ID입니다.": // ID가 존재하지 않는 경우
-                Debug.LogWarning("존재하지 않는 ID입니다. 회원가입을 해주세요.");
+                OnErrorPopup("존재하지 않는 ID입니다. 회원가입을 먼저 해주세요."); // 에러 팝업 UI 활성화
                 break;
             case "비밀번호가 일치하지 않습니다.":
-                Debug.LogWarning("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
+                OnErrorPopup("비밀번호가 일치하지 않습니다. 다시 입력해주세요."); // 에러 팝업 UI 활성화
                 break;
-                case "로그인 성공":
-                Debug.Log("로그인 성공!"); // 로그인 성공 메시지 출력
+            case "로그인 성공":
+                OnBankUI();
+                OnErrorPopup("로그인 성공!"); // 로그인 성공 메시지 표시
                 break;
             default: 
                 break;
         }
-        popupLogin.SetActive(false); // 로그인 팝업 UI 비활성화
-        popupBank.SetActive(true); // 은행 팝업 UI 활성화
+    }
+    
+    public void OnErrorPopup(string errorMessage)
+    {
+        errorText.text = errorMessage; // 에러 메시지 설정
+        popupError.SetActive(true); // 에러 팝업 UI 활성화
+    }
+
+    public void OnCloseErrorPopup()
+    {
+        errorText.text = ""; // 에러 메시지 초기화
+        popupError.SetActive(false); // 에러 팝업 UI 비활성화
     }
 }
+
