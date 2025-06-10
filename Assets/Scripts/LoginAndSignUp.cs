@@ -96,17 +96,18 @@ public class LoginAndSignUp : MonoBehaviour
         GameManager.Instance.LoadUserData(id, password); // GameManager를 통해 UserData 불러오기
         switch (GameManager.Instance.LoadUserData(id, password))
         {
-            case "존재하지 않는 ID입니다.": // ID가 존재하지 않는 경우
+            case "ID 없음": // ID가 존재하지 않는 경우
                 OnErrorPopup("존재하지 않는 ID입니다. 회원가입을 먼저 해주세요."); // 에러 팝업 UI 활성화
                 break;
-            case "비밀번호가 일치하지 않습니다.":
+            case "비밀번호 불일치":
                 OnErrorPopup("비밀번호가 일치하지 않습니다. 다시 입력해주세요."); // 에러 팝업 UI 활성화
                 break;
             case "로그인 성공":
                 OnBankUI();
                 OnErrorPopup("로그인 성공!"); // 로그인 성공 메시지 표시
                 break;
-            default: 
+            default:
+                Debug.LogError("예외 처리"); // 예외 처리: 알 수 없는 오류 발생
                 break;
         }
     }

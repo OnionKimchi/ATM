@@ -18,6 +18,7 @@ public class PopupBank : MonoBehaviour
     [SerializeField] private GameObject PopupError;
     [SerializeField] private TMP_InputField DepositInputField;
     [SerializeField] private TMP_InputField WithdrawInputField;
+    [SerializeField] private LoginAndSignUp loginAndSignUp; // LoginAndSignUp을 가져오기 위한 변수
 
     private UserData userData;// UserData를 가져오기 위한 변수
 
@@ -27,7 +28,6 @@ public class PopupBank : MonoBehaviour
     void Start()
     {
         OnBankUI();// 실행 시 BankUI를 활성화하고 나머지는 비활성화합니다.
-        OnPopupErrorClose(); // 팝업 오류창을 닫습니다.
     }
 
     void Awake()
@@ -59,11 +59,12 @@ public class PopupBank : MonoBehaviour
     {
         if (userData.cashAmount < money) // UserData의 Cash가 입금액보다 적으면 경고창을 띄웁니다.
         {
-            OnPopupError(); // 팝업 오류창을 띄웁니다.
+            loginAndSignUp.OnErrorPopup("잔액이 부족합니다.");// 팝업 오류창을 띄웁니다.
             return;
         }
         userData.cashAmount -= money; // UserData의 Cash에서 입금액을 뺍니다.
-        userData.bankAmount += money; // UserData의 Money에 입금액을 더합니다.
+        userData.bankAmount += money; // UserData의 Money에 입금액을 더
+                                      // 합니다.
 
         userInfoUI.Refresh();// UserInfoUI를 갱신합니다.
 
@@ -75,7 +76,7 @@ public class PopupBank : MonoBehaviour
     {
         if (userData.bankAmount < money) // UserData의 Bank가 출금액보다 적으면 경고창을 띄웁니다.
         {
-            OnPopupError(); // 팝업 오류창을 띄웁니다.
+            loginAndSignUp.OnErrorPopup("잔액이 부족합니다.");// 팝업 오류창을 띄웁니다.
             return;
         }
         userData.cashAmount += money; // UserData의 Cash에 출금액을 더합니다.
@@ -94,16 +95,6 @@ public class PopupBank : MonoBehaviour
     {
         OnWithdraw(Amount); // Amount 만큼 출금합니다.
     }
-
-    public void OnPopupError()
-    {
-        PopupError.SetActive(true); // 팝업 오류창을 활성화합니다.
-    }
-
-    public void OnPopupErrorClose()
-    {
-        PopupError.SetActive(false); // 팝업 오류창을 비활성화합니다.
-    }
     public void OnDepositInputFieldText()
     {
         string inputText = DepositInputField.text; // 입력 필드에서 텍스트를 가져옵니다.
@@ -113,7 +104,7 @@ public class PopupBank : MonoBehaviour
         }
         else
         {
-            OnPopupError(); // 변환 실패 시 오류 팝업을 띄웁니다.
+            loginAndSignUp.OnErrorPopup("입금불가 오류"); // 변환 실패 시 오류 팝업을 띄웁니다.
         }
     }
 
@@ -126,7 +117,7 @@ public class PopupBank : MonoBehaviour
         }
         else
         {
-            OnPopupError(); // 변환 실패 시 오류 팝업을 띄웁니다.
+            loginAndSignUp.OnErrorPopup("출금불가 오류"); // 변환 실패 시 오류 팝업을 띄웁니다.
         }
     }
 }

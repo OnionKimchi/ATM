@@ -56,14 +56,16 @@ public class GameManager : MonoBehaviour
 
         // 저장할 파일의 경로를 지정합니다.
         // Application.persistentDataPath는 각 플랫폼별로 안전하게 파일을 저장할 수 있는 경로를 제공합니다.
+        // windows에서는 일반적으로 C:\Users\<사용자명>\AppData\LocalLow\<회사명>\<프로젝트명> 경로가 됩니다.
         // 프로젝트 폴더의 바깥에 경로를 지정해야 읽기 전용 프로젝트에도 호환이 되므로 안전한 경로가 필요한것입니다.
         string path = Path.Combine(Application.persistentDataPath, $"{data.ID}.json");
+
 
         // 변환된 JSON 문자열을 파일에 저장합니다.
         // File.WriteAllText는 지정한 경로에 문자열을 저장하며, 파일이 없으면 새로 생성합니다.
         File.WriteAllText(path, json);
 
-        // 이 메서드를 호출하면 현재 userData의 값이 userdata.json 파일에 저장됩니다.
+        // 이 메서드를 호출하면 현재 userData의 값이 {data.ID}.json 파일에 저장됩니다.
     }
 
     public string LoadUserData(string id, string password)
@@ -74,13 +76,13 @@ public class GameManager : MonoBehaviour
         // 파일이 존재하는지 확인합니다.
         if (!File.Exists(path))
         {
-            return "존재하지 않는 ID입니다."; // 파일이 없으면 경고 메시지를 반환합니다.
+            return "ID 없음"; // 파일이 없으면 경고 메시지를 반환합니다.
         }
         string json = File.ReadAllText(path);
         UserData loaded = JsonUtility.FromJson<UserData>(json);
         if (loaded.Password != password) // 비밀번호가 일치하지 않으면 false를 반환합니다.
         {
-            return "비밀번호가 일치하지 않습니다."; // 비밀번호가 일치하지 않으면 경고 메시지를 반환합니다.
+            return "비밀번호 불일치"; // 비밀번호가 일치하지 않으면 경고 메시지를 반환합니다.
         }
         userData = loaded;
         return "로그인 성공"; // 로그인 성공 메시지를 반환합니다.
