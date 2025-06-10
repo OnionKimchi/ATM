@@ -153,6 +153,7 @@ public class PopupBank : MonoBehaviour
         else
         {
             loginAndSignUp.OnErrorPopup("이체불가 오류"); // 변환 실패 시 오류 팝업을 띄웁니다.
+            // 아마 아이디나 금액이 입력되지 않으면 이 에러가 발생할 것이므로 OnTransfer()의 ID, 금액 에러는 작동하지 않을 것입니다.
         }
     }
     public void OnDepositInputFieldText()
