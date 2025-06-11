@@ -129,6 +129,8 @@ public class PopupBank : MonoBehaviour
         GameManager.Instance.SaveUserData(targetUserData); // 변경된 타겟 UserData를 저장합니다.
         GameManager.Instance.SaveUserData(GameManager.Instance.UserData); // 변경된 UserData를 저장합니다.
         userInfoUI.Refresh();// UserInfoUI를 갱신합니다.
+        TransferInputField.text = ""; // 이체 입력 필드를 비웁니다.
+        loginAndSignUp.OnErrorPopup(money + "원을 " + id + "에게 이체하였습니다."); // 이체 성공 팝업을 띄웁니다.
     }
 
     public void OnDepositButton(int Amount)
