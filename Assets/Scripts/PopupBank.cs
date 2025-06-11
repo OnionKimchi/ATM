@@ -76,6 +76,7 @@ public class PopupBank : MonoBehaviour
                                       // 합니다.
 
         userInfoUI.Refresh();// UserInfoUI를 갱신합니다.
+        DepositInputField.text = ""; // 입금 입력 필드를 비웁니다.
 
 
         GameManager.Instance.SaveUserData(GameManager.Instance.UserData); // 변경 후 저장합니다.
@@ -92,6 +93,7 @@ public class PopupBank : MonoBehaviour
         GameManager.Instance.UserData.bankAmount -= money; // UserData의 Bank에서 출금액을 뺍니다.
 
         userInfoUI.Refresh();// UserInfoUI를 갱신합니다.
+        WithdrawInputField.text = ""; // 출금 입력 필드를 비웁니다.
 
         GameManager.Instance.SaveUserData(GameManager.Instance.UserData); // 변경 후 저장합니다.
     }
